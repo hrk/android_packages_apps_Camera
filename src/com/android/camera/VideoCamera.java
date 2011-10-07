@@ -16,6 +16,7 @@
 
 package com.android.camera;
 
+import com.android.camera.dcim.DCIMHelper;
 import com.android.camera.gallery.IImage;
 import com.android.camera.gallery.IImageList;
 import com.android.camera.ui.CamcorderHeadUpDisplay;
@@ -1292,7 +1293,7 @@ public class VideoCamera extends BaseCamera implements
 
     private void createVideoPath() {
         long dateTaken = System.currentTimeMillis();
-        String title = createName(dateTaken);
+        String title = /*createName(dateTaken)*/DCIMHelper.getNameForNewVideo();
         String filename;
         if (mProfile == null) {
             filename = title + "." + mOutputFormat;
@@ -1300,7 +1301,7 @@ public class VideoCamera extends BaseCamera implements
             filename = title + (MediaRecorder.OutputFormat.MPEG_4 == mProfile.fileFormat ? ".mp4" : ".3gp"); // Used when emailing.
         }
 
-        String cameraDirPath = ImageManager.CAMERA_IMAGE_BUCKET_NAME;
+        String cameraDirPath = /*ImageManager.CAMERA_IMAGE_BUCKET_NAME*/DCIMHelper.getDirectoryForNewImage();
         String filePath = cameraDirPath + "/" + filename;
         File cameraDir = new File(cameraDirPath);
         cameraDir.mkdirs();
@@ -1638,7 +1639,7 @@ public class VideoCamera extends BaseCamera implements
                         dataLocation(),
                         ImageManager.INCLUDE_VIDEOS,
                         ImageManager.SORT_ASCENDING,
-                        ImageManager.CAMERA_IMAGE_BUCKET_ID);
+                        ImageManager.CAMERA_IMAGE_BUCKET_ID());
         int count = list.getCount();
         if (count > 0) {
             IImage image = list.getImageAt(count - 1);
